@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Conexão com o MongoDB
 mongoose
   .connect(
-    "mongodb+srv://05gabrielasantos:12345@cluster0.cdr95.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+    "mongodb+srv://05gabrielasantos:12345@cluster0.tb4ma.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
     { useNewUrlParser: true }
   )
   .then(() => console.log("Conectado ao MongoDB"))
@@ -141,6 +141,10 @@ app.get("/novo-projeto", (req, res) => {
   res.sendFile(path.join(__dirname, "public/novo-projeto.html"));
 });
 
+app.get("/editar-projeto/:id", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/editar-projeto.html"));
+});
+
 app.post("/projeto", autenticarToken, async (req, res) => {
   try {
     const projeto = new Project(req.body);
@@ -153,8 +157,28 @@ app.post("/projeto", autenticarToken, async (req, res) => {
   }
 });
 
+app.put("/projeto/:id", autenticarToken, async (req, res) => {
+  try {
+    
+    const projeto = await Project.findOneAndUpdate({_id: req.params.id}, req.body);
+    // projeto.save()
+
+    res
+      .status(200)
+      .send({ status: 200, message: "Projeto editado com sucesso!" });
+  } catch(e) {
+    console.log(e)
+    res.status(500).send({ status: 500, message: "Erro ao editar projeto." });
+  }
+});
+
 app.get("/projetos", autenticarToken, async (req, res) => {
   const projetos = await Project.find();
+  res.send(projetos);
+});
+
+app.get("/projeto/:id", autenticarToken, async (req, res) => {
+  const projetos = await Project.findById(req.params.id);
   res.send(projetos);
 });
 

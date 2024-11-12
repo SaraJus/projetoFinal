@@ -9,6 +9,7 @@
         font-family: Arial, sans-serif;
         background-color: #f4f4f4;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         height: 100vh;
@@ -35,6 +36,7 @@
 
       input {
         width: 100%;
+        max-width: 280px;
         padding: 8px;
         margin-bottom: 16px;
         border: 1px solid #ccc;
@@ -61,10 +63,8 @@
     <form action="/auth/login" method="POST">
       <label for="email">Email:</label>
       <input type="email" id="email" name="email" required />
-      <br />
       <label for="senha">Senha:</label>
       <input type="password" id="senha" name="senha" required />
-      <br />
       <button type="submit">Entrar</button>
     </form>
     <p>Não tem uma conta? <a href="/cadastro">Cadastre-se aqui</a></p>
