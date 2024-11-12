@@ -69,4 +69,31 @@
     </form>
     <p>Não tem uma conta? <a href="/cadastro">Cadastre-se aqui</a></p>
   </body>
+
+  <script>
+     document.querySelector("form").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const formData = new FormData(event.target);
+      const data = Object.fromEntries(formData.entries());
+
+      fetch("/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          localStorage.setItem('token', result.token);
+          window.location.href = "/listagem-projetos";
+        })
+        .catch((error) => {
+          console.error(error);
+          alert("Erro ao criar projeto");
+        });
+    });
+  </script>
 </html>

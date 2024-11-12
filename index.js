@@ -119,12 +119,9 @@ app.post("/auth/login", async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.send(`
-        <script>
-          localStorage.setItem('token', '${token}');
-          window.location.href = '/listagem-projetos';
-        </script>
-      `);
+    res.send(
+      { token }
+    );
 
     // res.json({ message: "Login bem-sucedido", token });
   } catch {
@@ -159,14 +156,14 @@ app.post("/projeto", autenticarToken, async (req, res) => {
 
 app.put("/projeto/:id", autenticarToken, async (req, res) => {
   try {
-    
-    const projeto = await Project.findOneAndUpdate({_id: req.params.id}, req.body);
+
+    const projeto = await Project.findOneAndUpdate({ _id: req.params.id }, req.body);
     // projeto.save()
 
     res
       .status(200)
       .send({ status: 200, message: "Projeto editado com sucesso!" });
-  } catch(e) {
+  } catch (e) {
     console.log(e)
     res.status(500).send({ status: 500, message: "Erro ao editar projeto." });
   }
